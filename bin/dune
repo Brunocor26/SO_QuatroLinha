@@ -1,0 +1,4 @@
+(executable
+ (name main)
+ (modules main)
+ (libraries miou unix connect_lib))
