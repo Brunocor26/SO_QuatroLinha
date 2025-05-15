@@ -1,10 +1,10 @@
 (executable
  (name jogador1)
  (modules jogador1)
- (libraries miou unix connect_lib))
+ (libraries unix connect_lib))
 
 
 (executable
  (name jogador2)
  (modules jogador2)
- (libraries miou unix connect_lib))
+ (libraries unix connect_lib))
