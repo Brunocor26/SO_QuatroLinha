@@ -7,15 +7,20 @@ type tabuleiro = celula array array (* matriz 6x7 *)
 let tabuleiro_vazio () : tabuleiro =
   Array.init linhas (fun _ -> Array.make colunas ' ')
 
-let print (t: tabuleiro) =
-  print_endline "\n 0 1 2 3 4 5 6";
+let tabuleiro_to_string (t: tabuleiro) : string =
+  let buffer = Buffer.create 128 in
+  Buffer.add_string buffer " 0 1 2 3 4 5 6\n";
   Array.iter (fun linha ->
       Array.iter (fun c ->
-          Printf.printf "|%c" c
+          Buffer.add_string buffer (Printf.sprintf "|%c" c)
         ) linha;
-      print_endline "|"
+      Buffer.add_string buffer "|\n"
     ) t;
-  print_endline "---------------"
+  Buffer.add_string buffer "---------------\n";
+  Buffer.contents buffer
+
+let print (t: tabuleiro) =
+  print_endline (tabuleiro_to_string t)
 
 let jogada_valida t col =
   col >= 0 && col < colunas && t.(0).(col) = ' '
@@ -30,6 +35,17 @@ let aplicar_jogada t col peca =
   if l >= 0 then t.(l).(col) <- peca;
   t
 
-(*let fim_de_jogo t =
-  (* Aqui podes implementar verificação de vitória *)
-  false  (* placeholder *)*)
+let fim_de_jogo (t : tabuleiro) (peca : celula) : bool =
+  let verificar_horiz () =
+    Array.exists (fun linha ->
+      let rec aux count col =
+        if col >= colunas then false
+        else if linha.(col) = peca then
+          if count + 1 = 4 then true
+          else aux (count+1) (col+1)
+        else aux 0 (col + 1)
+      in 
+      aux 0 0
+      ) t
+    in
+    verificar_horiz()

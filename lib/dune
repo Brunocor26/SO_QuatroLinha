@@ -1,3 +1,4 @@
 (library
  (name connect_lib)
- (modules ipc board help))
+ (modules ipc board help)
+ (libraries unix))

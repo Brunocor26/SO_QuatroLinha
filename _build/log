@@ -1,8 +1,8 @@
-# dune exec bin/main.exe
+# dune exec bin/jogador1.exe
 # OCAMLPARAM: unset
 # Shared cache: enabled-except-user-rules
 # Shared cache location: /home/brunocor/.cache/dune/db
-# Workspace root: /home/brunocor/SO/trabalho2
+# Workspace root: /home/brunocor/SO/SO_QuatroLinha
 # Auto-detected concurrency: 8
 # Dune context:
 #  { name = "default"
@@ -13,4 +13,4 @@
 #  ; build_dir = In_build_dir "default"
 #  ; instrument_with = []
 #  }
-$ /home/brunocor/.opam/default/bin/ocamlc.opt -config > /tmp/dune_297def_output
+$ /home/brunocor/.opam/5.3/bin/ocamlc.opt -config > /tmp/dune_a2663f_output

@@ -1,1 +1,1 @@
-lib/board.ml: Array Printf
+lib/board.ml: Array Buffer Printf
