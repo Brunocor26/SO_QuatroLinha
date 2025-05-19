@@ -16,6 +16,7 @@ let tabuleiro_to_string (t: tabuleiro) : string =
         ) linha;
       Buffer.add_string buffer "|\n"
     ) t;
+    ignore (Sys.command "clear");  (* clear na consola *)
   Buffer.add_string buffer "---------------\n";
   Buffer.contents buffer
 
