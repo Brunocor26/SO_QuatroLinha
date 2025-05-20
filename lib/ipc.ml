@@ -13,3 +13,17 @@ let ler_pipe nome_pipe =
   let linha = input_line ic in
   close_in ic;
   linha
+
+let espera_pipe nome =
+  Printf.printf "À espera de um jogador...\n";
+  flush stdout;
+  while not (Sys.file_exists nome) do
+    Unix.sleepf 0.1;
+  done
+
+let limpar () =
+  (* Remove os pipes criados *)
+  (try Sys.remove "pipe_jogador1" with _ -> ());
+  (try Sys.remove "pipe_jogador2" with _ -> ());
+  Printf.printf "\nJogo interrompido. Pipes removidos.\n";
+  flush stdout

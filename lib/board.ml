@@ -16,7 +16,7 @@ let tabuleiro_to_string (t: tabuleiro) : string =
         ) linha;
       Buffer.add_string buffer "|\n"
     ) t;
-    ignore (Sys.command "clear");  (* clear na consola *)
+  ignore (Sys.command "clear");  (* clear na consola *)
   Buffer.add_string buffer "---------------\n";
   Buffer.contents buffer
 
@@ -25,6 +25,19 @@ let print (t: tabuleiro) =
 
 let jogada_valida t col =
   col >= 0 && col < colunas && t.(0).(col) = ' '
+
+let frase_narrador () =
+  let narrador = [|
+    "Este é o Quatro em Linha!";
+    "Que jogada perspicaz!";
+    "No que estará a pensar?";
+    "Pode ter ganho aqui o jogo...";
+    "Será que se enganou?";
+    "Nada previa esta jogada!";
+  |] in
+  Random.self_init ();
+  let idx = Random.int (Array.length narrador) in
+  narrador.(idx)
 
 let aplicar_jogada t col peca =
   let rec animar l =
@@ -50,15 +63,15 @@ let aplicar_jogada t col peca =
 let fim_de_jogo (t : tabuleiro) (peca : celula) : bool =
   let verificar_horiz () =
     Array.exists (fun linha ->
-      let rec aux count col =
-        if col >= colunas then false
-        else if linha.(col) = peca then
-          if count + 1 = 4 then true
-          else aux (count+1) (col+1)
-        else aux 0 (col + 1)
-      in 
-      aux 0 0
-    ) t
+        let rec aux count col =
+          if col >= colunas then false
+          else if linha.(col) = peca then
+            if count + 1 = 4 then true
+            else aux (count+1) (col+1)
+          else aux 0 (col + 1)
+        in 
+        aux 0 0
+      ) t
   in
   let ganhou = verificar_horiz () in
   if ganhou then (

@@ -3,11 +3,14 @@ open Connect_lib.Help
 open Connect_lib.Ipc
 
 let () =
+  Sys.set_signal Sys.sigint (Sys.Signal_handle (fun _ -> limpar (); exit 0)); (* para quando o jogo é interrompido (crtl+c) ele limpar tudo*)
+  ignore (Sys.command "clear");
+  Printf.printf "Bem vindo ao quatro em linha! À espera de uma jogada do jogador 1.\n";
+  flush stdout;
   criar_fifo "pipe_jogador1";
   criar_fifo "pipe_jogador2";
 
   let rec loop tabuleiro jogador jogada_atual =
-    (* Espera jogada do jogador 1 *)
     let jogada_adversario = ler_pipe "pipe_jogador1" in
     let coluna = int_of_string jogada_adversario in
     if coluna < 0 || coluna >= colunas then (
