@@ -27,13 +27,24 @@ let jogada_valida t col =
   col >= 0 && col < colunas && t.(0).(col) = ' '
 
 let aplicar_jogada t col peca =
-  let rec procurar_linha l =
-    if l = linhas then -1
-    else if t.(l).(col) = ' ' then l
-    else procurar_linha (l - 1)
+  let rec animar l =
+    if l = linhas then ()
+    else if t.(l).(col) = ' ' then (
+      if l > 0 then (
+        t.(l-1).(col) <- ' ';
+        print t;
+        Unix.sleepf 0.2
+      );
+      t.(l).(col) <- peca;
+      print t;
+      Unix.sleepf 0.2;
+      if l < linhas - 1 && t.(l+1).(col) = ' ' then (
+        t.(l).(col) <- ' ';
+        animar (l+1)
+      )
+    )
   in
-  let l = procurar_linha (linhas - 1) in
-  if l >= 0 then t.(l).(col) <- peca;
+  animar 0;
   t
 
 let fim_de_jogo (t : tabuleiro) (peca : celula) : bool =
@@ -47,9 +58,32 @@ let fim_de_jogo (t : tabuleiro) (peca : celula) : bool =
         else aux 0 (col + 1)
       in 
       aux 0 0
-      ) t
-    in
-    verificar_horiz()
+    ) t
+  in
+  let ganhou = verificar_horiz () in
+  if ganhou then (
+    let cores = [|
+      "\027[1;31m"; (* vermelho vivo *)
+      "\027[1;33m"; (* amarelo vivo *)
+      "\027[1;36m"; (* ciano vivo *)
+      "\027[1;35m"; (* magenta vivo *)
+      "\027[1;32m"; (* verde vivo *)
+    |] in
+    let emoji = "🎉" in
+    for i = 0 to 5 do
+      ignore (Sys.command "clear");
+      let cor = cores.(i mod Array.length cores) in
+      Printf.printf "%s\n\n\n\t\t%s %s JOGADOR %c VENCEU! %s %s\n\n\n\027[0m"
+        cor emoji emoji peca emoji emoji;
+      flush stdout;
+      Unix.sleepf 0.3;
+    done;
+    ignore (Sys.command "clear");
+    Printf.printf "\027[1;32m\n\n\n\t\t🏆🏆🏆 JOGADOR %c VENCEU! 🏆🏆🏆\n\n\n\027[0m" peca;
+    flush stdout;
+  );
+  ganhou
+
 
 let obter_ultima_jogada t_novo t_antigo =
   let coluna = ref (-1) in
