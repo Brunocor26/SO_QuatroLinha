@@ -9,7 +9,7 @@ let tabuleiro_vazio () : tabuleiro =
 
 let tabuleiro_to_string (t: tabuleiro) : string =
   let buffer = Buffer.create 128 in
-  Buffer.add_string buffer " 0 1 2 3 4 5 6\n";
+  Buffer.add_string buffer " 1 2 3 4 5 6 7\n";
   Array.iter (fun linha ->
       Array.iter (fun c ->
           Buffer.add_string buffer (Printf.sprintf "|%c" c)
@@ -50,3 +50,15 @@ let fim_de_jogo (t : tabuleiro) (peca : celula) : bool =
       ) t
     in
     verificar_horiz()
+
+let obter_ultima_jogada t_novo t_antigo =
+  let coluna = ref (-1) in
+  for c = 0 to colunas - 1 do
+    for l = 0 to linhas - 1 do
+      if t_antigo.(l).(c) <> t_novo.(l).(c) then coluna := c
+    done
+  done;
+  !coluna
+
+let copia_tabuleiro (t : tabuleiro) : tabuleiro =
+  Array.init linhas (fun l -> Array.copy t.(l))

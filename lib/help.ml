@@ -1,10 +1,10 @@
 open Board
 
 let rec pedir_jogada (t : tabuleiro) (peca : celula) : tabuleiro =
-  Printf.printf "Escolha a coluna onde quer jogar (0-6): ";
+  Printf.printf "Escolha a coluna onde quer jogar (1-7): ";
   let entrada = read_line () in
   try
-    let coluna = int_of_string entrada in
+    let coluna = int_of_string entrada - 1 in
     if jogada_valida t coluna then
       let t = aplicar_jogada t coluna peca in
       print t;
