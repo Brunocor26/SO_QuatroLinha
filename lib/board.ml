@@ -73,7 +73,72 @@ let fim_de_jogo (t : tabuleiro) (peca : celula) : bool =
         aux 0 0
       ) t
   in
-  let ganhou = verificar_horiz () in
+
+let verificar_vertical () =
+     let rec aux col linha count =
+      if linha >= linhas then false
+      else if t.(linha).(col) = peca then
+        if count + 1 = 4 then true
+        else aux col (linha + 1) (count + 1)
+      else aux col (linha + 1) 0
+    in
+    let rec loop col =
+      if col >= colunas then false
+      else if aux col 0 0 then true
+      else loop (col + 1)
+    in
+    loop 0
+in
+
+let verificar_diagonal_principal () =
+    let rec aux l c count =
+      if l >= linhas || c >= colunas then false
+      else if t.(l).(c) = peca then
+        if count + 1 = 4 then true
+        else aux (l + 1) (c + 1) (count + 1)
+      else aux (l + 1) (c + 1) 0
+    in
+    let rec loop_linhas l =
+      if l > linhas - 4 then false
+      else
+        let rec loop_colunas c =
+          if c > colunas - 4 then loop_linhas (l + 1)
+          else if aux l c 0 then true
+          else loop_colunas (c + 1)
+        in
+        loop_colunas 0
+    in
+    loop_linhas 0
+  in
+
+let verificar_diagonal_secundaria () =
+    let rec aux l c count =
+      if l >= linhas || c < 0 then false
+      else if t.(l).(c) = peca then
+        if count + 1 = 4 then true
+        else aux (l + 1) (c - 1) (count + 1)
+      else aux (l + 1) (c - 1) 0
+    in
+    let rec loop_linhas l =
+      if l > linhas - 4 then false
+      else
+        let rec loop_colunas c =
+          if c < 3 then loop_linhas (l + 1)
+          else if aux l c 0 then true
+          else loop_colunas (c - 1)
+        in
+        loop_colunas (colunas - 1)
+    in
+    loop_linhas 0
+  in
+
+  let ganhou =
+    verificar_horiz ()
+    verificar_vertical () 
+    verificar_diagonal_principal () 
+    verificar_diagonal_secundaria ()
+  in
+
   if ganhou then (
     let cores = [|
       "\027[1;31m"; (* vermelho vivo *)
