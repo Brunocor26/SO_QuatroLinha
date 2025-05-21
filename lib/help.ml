@@ -1,4 +1,5 @@
 open Board
+open Ipc
 
 let rec pedir_jogada (t : tabuleiro) (peca : celula) : tabuleiro =
   Printf.printf "Escolha a coluna onde quer jogar (1-7): ";
@@ -15,5 +16,17 @@ let rec pedir_jogada (t : tabuleiro) (peca : celula) : tabuleiro =
     )
   with
   | Failure _ ->
-      Printf.printf "Entrada inválida! Por favor, insira um número.\n";
-      pedir_jogada t peca
+    Printf.printf "Entrada inválida! Por favor, insira um número.\n";
+    pedir_jogada t peca
+
+let espera_jogada_valida pipe_nome =
+  let rec ler_e_validar () =
+    let jogada_str = ler_pipe pipe_nome in
+    try
+      int_of_string jogada_str
+    with Failure _ ->
+      Printf.printf "Mensagem do árbitro: '%s'\n" jogada_str;
+      flush stdout;
+      ler_e_validar ()
+  in
+  ler_e_validar ()

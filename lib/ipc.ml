@@ -22,8 +22,16 @@ let espera_pipe nome =
   done
 
 let limpar () =
-  (* Remove os pipes criados *)
+  (* Remove os pipes criados e esvazia o log de jogadas *)
   (try Sys.remove "pipe_jogador1" with _ -> ());
   (try Sys.remove "pipe_jogador2" with _ -> ());
-  Printf.printf "\nJogo interrompido. Pipes removidos.\n";
+  (try let oc = open_out_gen [Open_trunc; Open_wronly; Open_creat] 0o600 "jogadas_log.json" in close_out oc with _ -> ());
+  Printf.printf "\nJogo interrompido. Pipes removidos. Log esvaziado.\n";
   flush stdout
+
+let escrever_append ficheiro mensagem =
+  let oc = open_out_gen [Open_creat; Open_text; Open_append] 0o600 ficheiro in
+  output_string oc (mensagem ^ "\n");
+  flush oc;
+  close_out oc
+
