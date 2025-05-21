@@ -12,6 +12,9 @@ let () =
   let rec loop tabuleiro jogador jogada_atual =
     Printf.printf "Jogada número %d - Jogador %c\n" jogada_atual jogador;
     print tabuleiro;
+    flush stdout;
+    if(jogada_atual!=1) then(
+    Printf.printf "%s\n" (frase_narrador ()));
     let tabuleiro_copia = copia_tabuleiro tabuleiro in
     let tabuleiro_novo = pedir_jogada tabuleiro jogador in
     let jogada_str = string_of_int (obter_ultima_jogada tabuleiro_novo tabuleiro_copia) in
@@ -29,6 +32,8 @@ let () =
       let coluna = int_of_string jogada_adversario in
       let tabuleiro_atualizado = aplicar_jogada tabuleiro_novo coluna 'O' in
       print tabuleiro_atualizado;
+      flush stdout;
+      Printf.printf "%s\n"(frase_narrador ());
       if fim_de_jogo tabuleiro_atualizado 'O' then (
         Printf.printf "Jogador O venceu!\n";
         Sys.remove "pipe_jogador1";

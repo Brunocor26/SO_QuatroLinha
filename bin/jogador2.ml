@@ -19,7 +19,8 @@ let () =
     );
     let tabuleiro_novo = aplicar_jogada tabuleiro coluna 'X' in
     print tabuleiro_novo;
-
+    flush stdout;
+    Printf.printf "%s\n" (frase_narrador ());
     if fim_de_jogo tabuleiro_novo 'X' then
       Printf.printf "Jogador X venceu!\n"
     else (

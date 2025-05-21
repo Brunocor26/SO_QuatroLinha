@@ -12,8 +12,14 @@ let tabuleiro_to_string (t: tabuleiro) : string =
   Buffer.add_string buffer " 1 2 3 4 5 6 7\n";
   Array.iter (fun linha ->
       Array.iter (fun c ->
-          Buffer.add_string buffer (Printf.sprintf "|%c" c)
-        ) linha;
+        let s =
+          match c with
+          | 'X' -> Printf.sprintf "|\027[1;31m%c\027[0m" c  (* vermelho *)
+          | 'O' -> Printf.sprintf "|\027[1;32m%c\027[0m" c  (* verde *)
+          | _   -> Printf.sprintf "|%c" c
+        in
+        Buffer.add_string buffer s
+      ) linha;
       Buffer.add_string buffer "|\n"
     ) t;
   ignore (Sys.command "clear");  (* clear na consola *)
@@ -28,12 +34,12 @@ let jogada_valida t col =
 
 let frase_narrador () =
   let narrador = [|
-    "Este é o Quatro em Linha!";
-    "Que jogada perspicaz!";
-    "No que estará a pensar?";
-    "Pode ter ganho aqui o jogo...";
-    "Será que se enganou?";
-    "Nada previa esta jogada!";
+    "\027[1;31mEste é o Quatro em Linha!\027[0m";      (* vermelho *)
+    "\027[1;33mQue jogada perspicaz!\027[0m";          (* amarelo *)
+    "\027[1;36mNo que estará a pensar?\027[0m";         (* ciano *)
+    "\027[1;35mPode ter ganho aqui o jogo...\027[0m";   (* magenta *)
+    "\027[1;32mSerá que se enganou?\027[0m";            (* verde *)
+    "\027[1;34mNada previa esta jogada!\027[0m";        (* azul *)
   |] in
   Random.self_init ();
   let idx = Random.int (Array.length narrador) in
@@ -133,10 +139,10 @@ let verificar_diagonal_secundaria () =
   in
 
   let ganhou =
-    verificar_horiz ()
-    verificar_vertical () 
-    verificar_diagonal_principal () 
-    verificar_diagonal_secundaria ()
+  verificar_horiz ()
+  || verificar_vertical ()
+  || verificar_diagonal_principal ()
+  || verificar_diagonal_secundaria ()
   in
 
   if ganhou then (
