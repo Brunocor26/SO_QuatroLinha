@@ -1,5 +1,5 @@
-let linhas = 7
-let colunas = 6
+let linhas = 6
+let colunas = 7
 
 type celula = char (* ' ', 'X' ou 'O' *)
 type tabuleiro = celula array array (* matriz 6x7 *)

@@ -3,6 +3,7 @@ open Connect_lib.Help
 open Connect_lib.Ipc
 
 let () =
+  esvaziar_log (); (* Limpa o ficheiro no início *)
   Sys.set_signal Sys.sigint (Sys.Signal_handle (fun _ -> limpar (); exit 0)); (* para quando o jogo é interrompido (crtl+c) ele limpar tudo*)
   criar_fifo "pipe_jogador1";
   (* Aguarda até o jogador2 criar o pipe dele (entrar no jogo) *)
@@ -13,8 +14,6 @@ let () =
     Printf.printf "Jogada número %d - Jogador %c\n" jogada_atual jogador;
     print tabuleiro;
     flush stdout;
-    if(jogada_atual!=1) then(
-      Printf.printf "%s\n" (frase_narrador ()));
     let tabuleiro_copia = copia_tabuleiro tabuleiro in
     let tabuleiro_novo = pedir_jogada tabuleiro jogador in
     let jogada_str = string_of_int (obter_ultima_jogada tabuleiro_novo tabuleiro_copia) in
@@ -24,7 +23,6 @@ let () =
     in
         (* Envia a jogada para o jogador 2 *)
         escrever_pipe "pipe_jogador1" jogada_str;
-        (* escreve num log para podermos visualizar graças a um python *)
         registar_jogada "jogadas_log.json" jogada_atual jogador (int_of_string jogada_str);
 
       if fim_de_jogo tabuleiro_novo jogador then (
@@ -46,7 +44,6 @@ let () =
           let json_fim = {|{"jogada":-1,"jogador":"O","coluna":-1}|} in
           escrever_append "jogadas_log.json" json_fim;
           Printf.printf "Jogador O venceu!\n";
-          limpar ();
         ) else
           loop tabuleiro_atualizado jogador (jogada_atual + 1)
       )

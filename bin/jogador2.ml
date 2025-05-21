@@ -39,7 +39,7 @@ let () =
         registar_jogada "jogadas_log.json" jogada_atual jogador (int_of_string jogada_str);
         let json_fim = Printf.sprintf {|{"jogada":-1,"jogador":"%c","coluna":-1}|} jogador in
         escrever_append "jogadas_log.json" json_fim;
-        Printf.printf "Jogador %c venceu!\n" jogador
+        Printf.printf "Jogador %c venceu!\n" jogador;
       ) else
         loop tabuleiro_novo jogador (jogada_atual + 1)
     )

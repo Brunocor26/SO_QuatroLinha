@@ -30,3 +30,7 @@ let espera_jogada_valida pipe_nome =
       ler_e_validar ()
   in
   ler_e_validar ()
+
+let esvaziar_log () =
+  let oc = open_out_gen [Open_trunc; Open_wronly; Open_creat] 0o600 "jogadas_log.json" in
+  close_out oc

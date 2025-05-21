@@ -4,7 +4,7 @@ from tkinter import messagebox
 import os
 import platform
 
-LINHAS = 7
+LINHAS = 6
 COLUNAS = 7
 CELULA_SIZE = 60
 
