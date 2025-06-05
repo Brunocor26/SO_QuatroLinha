@@ -68,15 +68,6 @@ def atualizar():
         pos = pos_novo
     root.after(500, atualizar)
 
-def enviar_mensagem():
-    mensagem = "Não quero batotas!\n"
-    try:
-        with open("pipe_jogador1", "w") as p1, open("pipe_jogador2", "w") as p2:
-            p1.write(mensagem)
-            p2.write(mensagem)
-        messagebox.showinfo("Mensagem enviada", "Mensagem enviada com sucesso aos jogadores.")
-    except Exception as e:
-        messagebox.showerror("Erro", f"Erro ao escrever nos pipes:\n{e}")
 
 def enviar_mensagem_jogador1():
     mensagem = entry_jogador1.get().strip()
@@ -110,7 +101,6 @@ def verificar_pipes():
         aviso_label.config(text="Jogadores prontos!", fg="#388E3C", bg="#C8E6C9")
         btn_j1.config(state="normal")
         btn_j2.config(state="normal")
-        botao.config(state="normal")
     else:
         aviso_label.config(
             text="À espera dos jogadores...\n(Pipes não encontrados)", 
@@ -118,7 +108,6 @@ def verificar_pipes():
         )
         btn_j1.config(state="disabled")
         btn_j2.config(state="disabled")
-        botao.config(state="disabled")
     root.after(1000, verificar_pipes)
 
 tabuleiro = criar_tabuleiro_vazio()
@@ -139,12 +128,6 @@ canvas_frame.pack(pady=(0, 20))
 canvas = tk.Canvas(canvas_frame, width=COLUNAS*CELULA_SIZE, height=LINHAS*CELULA_SIZE,
                    bg="#1976D2", bd=0, highlightthickness=0)
 canvas.pack()
-
-# Botão principal
-botao = tk.Button(frame, text="Enviar mensagem padrão aos jogadores", command=enviar_mensagem,
-                  bg="#43A047", fg="white", font=("Segoe UI", 12, "bold"), padx=15, pady=8,
-                  activebackground="#66BB6A", activeforeground="white", relief="flat")
-botao.pack(fill="x", pady=(0, 25))
 
 # Frame para mensagens individuais
 mensagens_frame = tk.Frame(frame, bg="#ECEFF1")

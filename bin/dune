@@ -3,7 +3,7 @@
  (modules jogador1)
  (libraries unix connect_lib))
 
- (executable
+(executable
  (name jogador2)
  (modules jogador2)
  (libraries unix connect_lib))
