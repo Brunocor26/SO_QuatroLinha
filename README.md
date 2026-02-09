@@ -1,57 +1,58 @@
-SO_QuatroLinha
+# SO_QuatroLinha
 
-O SO_QuatroLinha é uma implementação do clássico jogo "Quatro em Linha" (Connect Four), desenvolvida no âmbito da disciplina de Sistemas Operativos. O projeto foca-se na comunicação entre processos (IPC) utilizando Pipes (Ficheiros FIFO) e é desenvolvido na linguagem OCaml, utilizando o sistema de construção Dune.
-📋 Funcionalidades
+O **SO_QuatroLinha** é uma implementação do clássico jogo "Quatro em Linha" (Connect Four), desenvolvida no âmbito da disciplina de Sistemas Operativos. O projeto foca-se na comunicação entre processos (IPC) utilizando **Pipes** (Ficheiros FIFO) e é desenvolvido na linguagem **OCaml**, utilizando o sistema de construção **Dune**.
 
-    Comunicação IPC: Utilização de pipes para a troca de mensagens entre instâncias de jogadores.
+## 📋 Funcionalidades
 
-    Gestão de Tabuleiro: Lógica de jogo modular para verificar vitórias e jogadas válidas.
+* **Comunicação IPC**: Utilização de pipes para a troca de mensagens entre instâncias de jogadores.
+* **Gestão de Tabuleiro**: Lógica de jogo modular para verificar vitórias e jogadas válidas.
+* **Interface por Terminal**: Jogo totalmente baseado em linha de comandos.
+* **Sistema Multi-Processo**: Suporte para dois jogadores a correr em processos independentes.
 
-    Interface por Terminal: Jogo totalmente baseado em linha de comandos.
+## 🛠️ Tecnologias Utilizadas
 
-    Sistema Multi-Processo: Suporte para dois jogadores a correr em processos independentes.
+* **OCaml**: Linguagem de programação funcional principal.
+* **Dune**: Gestor de projetos e sistema de build.
+* **Python**: Script de auxílio (árbitro) para gestão de partidas.
 
-🛠️ Tecnologias Utilizadas
+## 📂 Estrutura do Projeto
 
-    OCaml: Linguagem de programação funcional principal.
+* `bin/`: Contém o código fonte dos executáveis dos jogadores (`jogador1.ml` e `jogador2.ml`).
+* `lib/`: Bibliotecas de suporte para a lógica do tabuleiro (`board.ml`), comunicação (`ipc.ml`) e funções auxiliares (`help.ml`).
+* `arbitro.py`: Script Python para coordenação adicional do jogo.
 
-    Dune: Gestor de projetos e sistema de build.
-
-    Python: Script de auxílio (árbitro) para gestão de partidas.
-
-📂 Estrutura do Projeto
-
-    bin/: Contém o código fonte dos executáveis dos jogadores (jogador1.ml e jogador2.ml).
-
-    lib/: Bibliotecas de suporte para a lógica do tabuleiro (board.ml), comunicação (ipc.ml) e funções auxiliares (help.ml).
-
-    arbitro.py: Script Python para coordenação adicional do jogo.
-
-🚀 Como Executar
+## 🚀 Como Executar
 
 Para realizar uma partida entre dois jogadores utilizando Pipes, siga estes passos em dois terminais distintos:
-Preparação (Qualquer Terminal)
+
+### Preparação (Qualquer Terminal)
 
 Antes de iniciar, limpe e compile o projeto:
-Bash
 
+```bash
 dune clean
 dune build
 
-Terminal 1 (Jogador 1)
+```
+
+### Terminal 1 (Jogador 1)
 
 Inicie o primeiro jogador:
-Bash
 
+```bash
 dune exec bin/jogador1.exe
 
-Terminal 2 (Jogador 2)
+```
 
-Importante: Inicie o segundo jogador antes de realizar a primeira jogada no Terminal 1, para garantir que os Pipes de comunicação estão prontos:
-Bash
+### Terminal 2 (Jogador 2)
 
+**Importante:** Inicie o segundo jogador antes de realizar a primeira jogada no Terminal 1, para garantir que os Pipes de comunicação estão prontos:
+
+```bash
 dune exec bin/jogador2.exe
 
-Fluxo de Jogo
+```
+
+### Fluxo de Jogo
 
 Após ambos os executáveis estarem a correr, alterne entre os terminais para realizar as jogadas conforme as instruções no ecrã.
